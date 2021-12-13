@@ -241,6 +241,7 @@ for i in range(real_train_size):
     doc_words = shuffle_doc_words_list[i]
     words = doc_words.split()
     doc_len = len(words)
+   #sdx 把一篇doc的向量=此doc中所有word的和  维度和word——dim一样  相加后归一化下（除以len（word））
     for word in words:
         if word in word_vector_map:
             word_vector = word_vector_map[word]
@@ -255,9 +256,11 @@ for i in range(real_train_size):
         data_x.append(doc_vec[j] / doc_len)  # doc_vec[j]/ doc_len
 
 # x = sp.csr_matrix((real_train_size, word_embeddings_dim), dtype=np.float32)
+
+#sdx 这里就是每一条text的向量x  【 batch，dim】
 x = sp.csr_matrix((data_x, (row_x, col_x)), shape=(
     real_train_size, word_embeddings_dim))
-
+#sdx y是 one-hot形式的
 y = []
 for i in range(real_train_size):
     doc_meta = shuffle_doc_name_list[i]
